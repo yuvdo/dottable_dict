@@ -17,3 +17,4 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/yuvdo/dottable_dict"
+Issues = "https://github.com/yuvdo/dottable_dict/issues"
