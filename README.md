@@ -1,4 +1,11 @@
 # Dottable Dictionary
+Your everyday dictionary, with the special ability to be accessed using dot-notation.
+
+Use dottable dictionaries to turn this: \
+`d["somekey"]["some_inner_key"]["some_internal_key"]`\
+to this:\
+`d.somekey.some_inner_key.some_internal_key`.
+
 ## Background
 The basic idea behind this package was to migrate JavaScript's dot-notation access to Python dictionaries.
 In many (maybe most) cases, dictionaries are used with keys which can serve as identifiers (for more on those take a look [here](https://docs.python.org/3/library/stdtypes.html#str.isidentifier)).\

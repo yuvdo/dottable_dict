@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dottable_dict"
-version = "0.0.2"
+version = "0.0.3"
 authors = [{ name = "Yuval Dotan", email = "ydotan.tech@gmail.com" }]
-description = "TBA"
+description = "Your everyday dictionary, with the special ability to be accessed using dot-notation"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
