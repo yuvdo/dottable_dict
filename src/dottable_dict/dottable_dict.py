@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Any, NewType
+from typing import Any, NewType, Sequence
 
 FrozenState = NewType("FrozenState", tuple[tuple[Any, Any], ...])
 
@@ -11,6 +11,19 @@ class DottableDict:
     __data__: dict
     __autoconvert__: bool
 
+    @staticmethod
+    def __convert_sequence__(it: Sequence):
+        converted = []
+        for i in it:
+            if isinstance(i, Sequence):
+                converted.append(DottableDict.__convert_sequence__(i))
+            else:
+                try:
+                    converted.append(DottableDict(i))
+                except:
+                    converted.append(i)
+        return converted
+
     def __init__(self, data: Any = None, autoconvert_dicts: bool = True):
         self.__autoconvert__ = autoconvert_dicts
         data = {} if data is None else data
@@ -19,16 +32,20 @@ class DottableDict:
         else:
             try:
                 data = dict(data)
-            except TypeError as e:
+            except Exception as e:
                 e.args = (f"cannot convert input to dict: {data}",)
                 raise (e)
             self.__data__ = {}
             for k, v in data.items():
-                self.__data__[k] = (
-                    DottableDict(v)
-                    if self.__autoconvert__ and isinstance(v, dict)
-                    else v
-                )
+                val = v
+                if self.__autoconvert__:
+                    if isinstance(v, dict):
+                        val = DottableDict(v)
+                    elif isinstance(v, Sequence):
+                        val = DottableDict.__convert_sequence__(v)
+                    else:
+                        val = v
+                self.__data__[k] = val
 
     def __getattr__(self, key: str) -> Any:
         if not (key in self.__data__ or key in dir(self)):
