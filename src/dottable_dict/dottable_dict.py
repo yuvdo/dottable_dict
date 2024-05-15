@@ -41,7 +41,9 @@ class DottableDict:
             self.__data__ = {}
             for k, v in data.items():
                 if self.__autoconvert__:
-                    if isinstance(v, Sequence):
+                    if not v:
+                        val = v
+                    elif isinstance(v, Sequence):
                         val = DottableDict.__convert_sequence__(v)
                     else:
                         try:
