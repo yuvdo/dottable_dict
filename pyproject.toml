@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dottable_dict"
-version = "0.0.3"
+version = "0.0.4a"
 authors = [{ name = "Yuval Dotan", email = "ydotan.tech@gmail.com" }]
 description = "Your everyday dictionary, with the special ability to be accessed using dot-notation"
 readme = "README.md"
