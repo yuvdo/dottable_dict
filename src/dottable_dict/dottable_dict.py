@@ -12,9 +12,12 @@ class DottableDict:
     __autoconvert__: bool
 
     @staticmethod
-    def __convert_sequence__(it: Sequence):
+    def __convert_sequence__(seq: Sequence):
+        seq_type: type = type(seq)
         converted = []
-        for i in it:
+        if "join" in dir(seq):
+            return seq
+        for i in seq:
             if isinstance(i, Sequence):
                 converted.append(DottableDict.__convert_sequence__(i))
             else:
@@ -22,7 +25,7 @@ class DottableDict:
                     converted.append(DottableDict(i))
                 except:
                     converted.append(i)
-        return converted
+        return seq_type(converted)
 
     def __init__(self, data: Any = None, autoconvert_dicts: bool = True):
         self.__autoconvert__ = autoconvert_dicts
@@ -37,14 +40,14 @@ class DottableDict:
                 raise (e)
             self.__data__ = {}
             for k, v in data.items():
-                val = v
                 if self.__autoconvert__:
-                    if isinstance(v, dict):
-                        val = DottableDict(v)
-                    elif isinstance(v, Sequence):
+                    if isinstance(v, Sequence):
                         val = DottableDict.__convert_sequence__(v)
                     else:
-                        val = v
+                        try:
+                            val = DottableDict(v)
+                        except:
+                            val = v
                 self.__data__[k] = val
 
     def __getattr__(self, key: str) -> Any:
